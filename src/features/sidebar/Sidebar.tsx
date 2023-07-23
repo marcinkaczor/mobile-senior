@@ -1,28 +1,27 @@
-import { styled } from '@mui/joy/styles';
-import GlobalStyles from '@mui/joy/GlobalStyles';
+import { ColorSchemeToggle } from '@mobileSenior/utils/ColorSchemeToggle';
+import { closeSidebar } from '@mobileSenior/utils/sidebar';
+import { Link } from '@mui/joy';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
 import Card from '@mui/joy/Card';
 import Divider from '@mui/joy/Divider';
+import GlobalStyles from '@mui/joy/GlobalStyles';
 import IconButton from '@mui/joy/IconButton';
 import Input from '@mui/joy/Input';
-import Link from '@mui/joy/Link';
 import LinearProgress from '@mui/joy/LinearProgress';
 import List from '@mui/joy/List';
 import ListItem from '@mui/joy/ListItem';
 import ListItemButton from '@mui/joy/ListItemButton';
 import ListItemContent from '@mui/joy/ListItemContent';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
-import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
-import { closeSidebar } from '@mobileSenior/utils/sidebar';
-import { ColorSchemeToggle } from '@mobileSenior/utils/ColorSchemeToggle';
-
-const Dropdown = styled('i')(({ theme }) => ({
-  color: theme.vars.palette.text.tertiary,
-}));
+import Typography from '@mui/joy/Typography';
+import { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 export function Sidebar() {
+  const [isCardVisible, setCardVisible] = useState(true);
+
   return (
     <Sheet
       className="Sidebar"
@@ -53,9 +52,9 @@ export function Sidebar() {
       <GlobalStyles
         styles={(theme) => ({
           ':root': {
-            '--Sidebar-width': '224px',
+            '--Sidebar-width': '256px',
             [theme.breakpoints.up('lg')]: {
-              '--Sidebar-width': '256px',
+              '--Sidebar-width': '288px',
             },
           },
         })}
@@ -80,7 +79,7 @@ export function Sidebar() {
         onClick={() => closeSidebar()}
       />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-        <Typography fontWeight="xl">MUI</Typography>
+        <Typography fontWeight="xl">MOBILNY SENIOR</Typography>
         <ColorSchemeToggle sx={{ ml: 'auto' }} />
       </Box>
       <Input
@@ -103,72 +102,21 @@ export function Sidebar() {
             '--List-nestedInsetStart': '40px',
           }}
         >
-          <ListItem>
+          <ListItem component={RouterLink} to="/">
             <ListItemButton>
               <ListItemDecorator>
                 <i data-feather="home" />
               </ListItemDecorator>
-              <ListItemContent>Home</ListItemContent>
-              <Dropdown data-feather="chevron-down" />
+              <ListItemContent>Strona główna</ListItemContent>
             </ListItemButton>
           </ListItem>
-          <ListItem>
+          <ListItem component={RouterLink} to="/rides">
             <ListItemButton>
               <ListItemDecorator>
-                <i data-feather="bar-chart-2" />
+                <i data-feather="calendar" />
               </ListItemDecorator>
-              <ListItemContent>Dashboard</ListItemContent>
-              <Dropdown data-feather="chevron-down" />
+              <ListItemContent>Przejazdy</ListItemContent>
             </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <i data-feather="layers" />
-              </ListItemDecorator>
-              <ListItemContent>Projects</ListItemContent>
-              <Dropdown data-feather="chevron-down" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <i data-feather="check-square" />
-              </ListItemDecorator>
-              <ListItemContent>Tasks</ListItemContent>
-              <Dropdown data-feather="chevron-down" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <i data-feather="flag" />
-              </ListItemDecorator>
-              <ListItemContent>Reporting</ListItemContent>
-              <Dropdown data-feather="chevron-down" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem nested>
-            <ListItemButton>
-              <ListItemDecorator>
-                <i data-feather="bar-chart-2" />
-              </ListItemDecorator>
-              <ListItemContent>Users</ListItemContent>
-              <i data-feather="chevron-up" />
-            </ListItemButton>
-            <List>
-              <ListItem>
-                <ListItemButton selected variant="soft" color="primary">
-                  My Profile
-                </ListItemButton>
-              </ListItem>
-              <ListItem>
-                <ListItemButton>New user</ListItemButton>
-              </ListItem>
-              <ListItem>
-                <ListItemButton>Role & Permission</ListItemButton>
-              </ListItem>
-            </List>
           </ListItem>
         </List>
         <List
@@ -179,23 +127,25 @@ export function Sidebar() {
             '--List-gap': '8px',
           }}
         >
-          <ListItem>
+          <ListItem component={RouterLink} to="/profile">
             <ListItemButton>
               <ListItemDecorator>
-                <i data-feather="life-buoy" />
+                <i data-feather="user" />
               </ListItemDecorator>
-              <ListItemContent>Supports</ListItemContent>
+              <ListItemContent>Profil</ListItemContent>
             </ListItemButton>
           </ListItem>
-          <ListItem>
+          <ListItem component={RouterLink} to="/settings">
             <ListItemButton>
               <ListItemDecorator>
                 <i data-feather="settings" />
               </ListItemDecorator>
-              <ListItemContent>Settings</ListItemContent>
+              <ListItemContent>Ustawienia</ListItemContent>
             </ListItemButton>
           </ListItem>
         </List>
+      </Box>
+      {isCardVisible && (
         <Card
           variant="soft"
           color="primary"
@@ -203,30 +153,34 @@ export function Sidebar() {
           sx={{ boxShadow: 'none' }}
         >
           <Typography fontSize="sm" fontWeight="lg" mb={0.5}>
-            Used space
+            Wykorzystane przejazdy
           </Typography>
           <Typography level="body3">
-            Your team has used 80% of your available space. Need more?
+            Wykorzystałeś w tym miesiącu <b>4</b> przejazdy oferowane przez
+            gminę <b>Ogrodzieniec</b>. Pozostał Ci do wykorzystania <b>1</b>{' '}
+            przejazd.
           </Typography>
           <LinearProgress value={80} determinate sx={{ my: 1.5 }} />
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            <Link fontSize="sm" component="button" fontWeight="lg">
-              Upgrade plan
-            </Link>
-            <Link fontSize="sm" component="button">
-              Dismiss
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+            <Link
+              fontSize="sm"
+              component="button"
+              onClick={() => setCardVisible(false)}
+            >
+              Rozumiem
             </Link>
           </Box>
         </Card>
-      </Box>
+      )}
+
       <Divider />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
         <Avatar variant="outlined" src="/static/images/avatar/3.jpg" />
         <Box sx={{ minWidth: 0, flex: 1 }}>
           <Typography fontSize="sm" fontWeight="lg">
-            Siriwat K.
+            Gałązka B.
           </Typography>
-          <Typography level="body3">siriwatk@test.com</Typography>
+          <Typography level="body3">galazka.bogdan@gmail.com</Typography>
         </Box>
         <IconButton variant="plain" color="neutral">
           <i data-feather="log-out" />

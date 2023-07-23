@@ -1,12 +1,17 @@
 import { customTheme } from '@mobileSenior/utils/theme';
 import { useScript } from '@mobileSenior/utils/useScript';
 
-import { Box, CssBaseline, CssVarsProvider, GlobalStyles } from '@mui/joy';
 import { Navbar } from '@mobileSenior/features/navbar/Navbar';
+import { Box, CssBaseline, CssVarsProvider, GlobalStyles } from '@mui/joy';
 
 import { useEnhancedEffect } from '@mobileSenior/utils/useEnhancedEffect';
 
+import { Home } from '@mobileSenior/features/home/Home';
+import Profile from '@mobileSenior/features/profile/Profile';
+import { Rides } from '@mobileSenior/features/rides/Rides';
+import { Settings } from '@mobileSenior/features/settings/Settings';
 import { Sidebar } from '@mobileSenior/features/sidebar/Sidebar';
+import { Route, Routes } from 'react-router-dom';
 
 export function App() {
   const status = useScript(`https://unpkg.com/feather-icons`);
@@ -64,7 +69,12 @@ export function App() {
             overflow: 'auto',
           })}
         >
-          HELLO
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/rides" element={<Rides />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/settings" element={<Settings />} />
+          </Routes>
         </Box>
       </Box>
     </CssVarsProvider>

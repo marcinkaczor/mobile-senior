@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { StyledEngineProvider } from '@mui/joy';
 
 import { App } from '@mobileSenior/App';
+import { BrowserRouter } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -13,7 +14,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <StyledEngineProvider injectFirst>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </StyledEngineProvider>
   </React.StrictMode>,
 );
