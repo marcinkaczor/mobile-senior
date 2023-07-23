@@ -1,4 +1,5 @@
 import { DESTINATIONS, PREFERENCES } from '@mobileSenior/constants';
+import { Offers } from '@mobileSenior/features/rides/features/offers/Offers';
 import {
   Box,
   Button,
@@ -97,6 +98,7 @@ export function Rides() {
           </Box>
         </Box>
       </Box>
+      <Offers />
     </Sheet>
   );
 }
