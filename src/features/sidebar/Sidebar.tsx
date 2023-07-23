@@ -84,7 +84,7 @@ export function Sidebar() {
       </Box>
       <Input
         startDecorator={<i data-feather="search" />}
-        placeholder="Search"
+        placeholder="Szukaj"
       />
       <Box
         sx={{
@@ -115,7 +115,7 @@ export function Sidebar() {
               <ListItemDecorator>
                 <i data-feather="calendar" />
               </ListItemDecorator>
-              <ListItemContent>Przejazdy</ListItemContent>
+              <ListItemContent>Przejazd</ListItemContent>
             </ListItemButton>
           </ListItem>
         </List>
