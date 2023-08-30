@@ -34,7 +34,7 @@ export const OFFER_ITEMS: OfferItem[] = [
     driver: {
       id: uuidv4(),
       name: 'Andrzej',
-      surname: 'Pomocny',
+      surname: 'Jaworski',
       gender: 'M',
       age: 48,
       city: 'Ogrodzieniec',

@@ -7,7 +7,7 @@ import Typography from '@mui/joy/Typography';
 import * as React from 'react';
 
 import { PREFERENCES } from '@mobileSenior/constants/preference';
-import { OfferItem } from '@mobileSenior/features/rides/features/offers/constants/offerItems';
+import { OfferItem } from '@mobileSenior/features/ride/features/offers/constants/offerItems';
 import { Avatar, Button, Chip } from '@mui/joy';
 
 interface Props {

@@ -1,6 +1,6 @@
 import { DESTINATIONS } from '@mobileSenior/constants/destination';
 import { PREFERENCES } from '@mobileSenior/constants/preference';
-import { Offers } from '@mobileSenior/features/rides/features/offers/Offers';
+import { Offers } from '@mobileSenior/features/ride/features/offers/Offers';
 import { useEnhancedEffect } from '@mobileSenior/utils/useEnhancedEffect';
 import { useScript } from '@mobileSenior/utils/useScript';
 import {

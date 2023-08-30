@@ -10,9 +10,9 @@ export interface ApplicationState {
     commune: string;
     district: string;
     postalCode: string;
-    aboutMe: string;
+    about: string;
   };
-  reservations: {
+  rides: {
     id: string;
     driverId: string;
     destinationCode: DestinationCode;
@@ -21,3 +21,19 @@ export interface ApplicationState {
     departureDateTime: string;
   }[];
 }
+
+export const getDefaultApplicationState = (): ApplicationState => {
+  return {
+    user: {
+      name: '',
+      surname: '',
+      email: '',
+      street: '',
+      commune: '',
+      district: '',
+      postalCode: '',
+      about: '',
+    },
+    rides: [],
+  };
+};

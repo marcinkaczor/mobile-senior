@@ -9,7 +9,7 @@ import { useEnhancedEffect } from '@mobileSenior/utils/useEnhancedEffect';
 import { ROUTER } from '@mobileSenior/constants/router';
 import { Home } from '@mobileSenior/features/home/Home';
 import Profile from '@mobileSenior/features/profile/Profile';
-import { Ride } from '@mobileSenior/features/rides/Ride';
+import { Ride } from '@mobileSenior/features/ride/Ride';
 import { Settings } from '@mobileSenior/features/settings/Settings';
 import { Sidebar } from '@mobileSenior/features/sidebar/Sidebar';
 import { Route, Routes } from 'react-router-dom';
