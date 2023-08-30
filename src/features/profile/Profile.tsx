@@ -1,3 +1,5 @@
+import { useEnhancedEffect } from '@mobileSenior/utils/useEnhancedEffect';
+import { useScript } from '@mobileSenior/utils/useScript';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import { chipClasses } from '@mui/joy/Chip';
@@ -14,6 +16,17 @@ import Textarea from '@mui/joy/Textarea';
 import Typography from '@mui/joy/Typography';
 
 export default function MyProfile() {
+  const status = useScript(`https://unpkg.com/feather-icons`);
+
+  useEnhancedEffect(() => {
+    // Feather icon setup: https://github.com/feathericons/feather#4-replace
+    // @ts-ignore
+    if (typeof feather !== 'undefined') {
+      // @ts-ignore
+      feather.replace();
+    }
+  }, [status]);
+
   return (
     <Sheet
       sx={{

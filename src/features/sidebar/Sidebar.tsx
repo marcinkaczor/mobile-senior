@@ -1,3 +1,4 @@
+import { ROUTER } from '@mobileSenior/constants/router';
 import { ColorSchemeToggle } from '@mobileSenior/utils/ColorSchemeToggle';
 import { closeSidebar } from '@mobileSenior/utils/sidebar';
 import { Link } from '@mui/joy';
@@ -102,7 +103,7 @@ export function Sidebar() {
             '--List-nestedInsetStart': '40px',
           }}
         >
-          <ListItem component={RouterLink} to="/">
+          <ListItem component={RouterLink} to={ROUTER.HOME}>
             <ListItemButton>
               <ListItemDecorator>
                 <i data-feather="home" />
@@ -110,7 +111,7 @@ export function Sidebar() {
               <ListItemContent>Strona główna</ListItemContent>
             </ListItemButton>
           </ListItem>
-          <ListItem component={RouterLink} to="/rides">
+          <ListItem component={RouterLink} to={ROUTER.RIDE}>
             <ListItemButton>
               <ListItemDecorator>
                 <i data-feather="calendar" />
@@ -127,7 +128,7 @@ export function Sidebar() {
             '--List-gap': '8px',
           }}
         >
-          <ListItem component={RouterLink} to="/profile">
+          <ListItem component={RouterLink} to={ROUTER.PROFILE}>
             <ListItemButton>
               <ListItemDecorator>
                 <i data-feather="user" />
@@ -135,7 +136,7 @@ export function Sidebar() {
               <ListItemContent>Profil</ListItemContent>
             </ListItemButton>
           </ListItem>
-          <ListItem component={RouterLink} to="/settings">
+          <ListItem component={RouterLink} to={ROUTER.SETTINGS}>
             <ListItemButton>
               <ListItemDecorator>
                 <i data-feather="settings" />
@@ -156,11 +157,11 @@ export function Sidebar() {
             Wykorzystane przejazdy
           </Typography>
           <Typography level="body3">
-            Wykorzystałeś w tym miesiącu <b>4</b> przejazdy oferowane przez
+            Wykorzystałeś w tym miesiącu <b>2</b> przejazdy oferowane przez
             gminę <b>Ogrodzieniec</b>. Pozostał Ci do wykorzystania <b>1</b>{' '}
             przejazd.
           </Typography>
-          <LinearProgress value={80} determinate sx={{ my: 1.5 }} />
+          <LinearProgress value={200 / 3} determinate sx={{ my: 1.5 }} />
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
             <Link
               fontSize="sm"

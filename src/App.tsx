@@ -6,9 +6,10 @@ import { Box, CssBaseline, CssVarsProvider, GlobalStyles } from '@mui/joy';
 
 import { useEnhancedEffect } from '@mobileSenior/utils/useEnhancedEffect';
 
+import { ROUTER } from '@mobileSenior/constants/router';
 import { Home } from '@mobileSenior/features/home/Home';
 import Profile from '@mobileSenior/features/profile/Profile';
-import { Rides } from '@mobileSenior/features/rides/Rides';
+import { Ride } from '@mobileSenior/features/rides/Ride';
 import { Settings } from '@mobileSenior/features/settings/Settings';
 import { Sidebar } from '@mobileSenior/features/sidebar/Sidebar';
 import { Route, Routes } from 'react-router-dom';
@@ -70,10 +71,10 @@ export function App() {
           })}
         >
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/rides" element={<Rides />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/settings" element={<Settings />} />
+            <Route path={ROUTER.HOME} element={<Home />} />
+            <Route path={ROUTER.RIDE} element={<Ride />} />
+            <Route path={ROUTER.PROFILE} element={<Profile />} />
+            <Route path={ROUTER.SETTINGS} element={<Settings />} />
           </Routes>
         </Box>
       </Box>

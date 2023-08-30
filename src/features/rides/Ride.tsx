@@ -1,5 +1,8 @@
-import { DESTINATIONS, PREFERENCES } from '@mobileSenior/constants';
+import { DESTINATIONS } from '@mobileSenior/constants/destination';
+import { PREFERENCES } from '@mobileSenior/constants/preference';
 import { Offers } from '@mobileSenior/features/rides/features/offers/Offers';
+import { useEnhancedEffect } from '@mobileSenior/utils/useEnhancedEffect';
+import { useScript } from '@mobileSenior/utils/useScript';
 import {
   Box,
   Button,
@@ -12,7 +15,18 @@ import {
   Typography,
 } from '@mui/joy';
 
-export function Rides() {
+export function Ride() {
+  const status = useScript(`https://unpkg.com/feather-icons`);
+
+  useEnhancedEffect(() => {
+    // Feather icon setup: https://github.com/feathericons/feather#4-replace
+    // @ts-ignore
+    if (typeof feather !== 'undefined') {
+      // @ts-ignore
+      feather.replace();
+    }
+  }, [status]);
+
   return (
     <Sheet
       sx={{
@@ -54,7 +68,9 @@ export function Rides() {
                 defaultValue=""
               >
                 {DESTINATIONS.map((destination) => (
-                  <Option value={destination.id}>{destination.name}</Option>
+                  <Option key={destination.id} value={destination.id}>
+                    {destination.name}
+                  </Option>
                 ))}
               </Select>
             </FormControl>
@@ -65,6 +81,8 @@ export function Rides() {
               <Input
                 type="datetime-local"
                 placeholder="Data i godzina odbioru"
+                value="2023-01-01T14:00"
+                onChange={(event) => window.console.log(event)}
               />
             </FormControl>
           </Box>
@@ -82,7 +100,9 @@ export function Rides() {
               <FormLabel>Preferencje</FormLabel>
               <Select placeholder="Osobiste preferencje">
                 {PREFERENCES.map((preference) => (
-                  <Option value={preference.id}>{preference.name}</Option>
+                  <Option key={preference.id} value={preference.id}>
+                    {preference.description}
+                  </Option>
                 ))}
               </Select>
             </FormControl>
@@ -97,8 +117,8 @@ export function Rides() {
             <Button size="sm">Szukaj</Button>
           </Box>
         </Box>
+        <Offers />
       </Box>
-      <Offers />
     </Sheet>
   );
 }

@@ -1,5 +1,8 @@
+import { OFFER_ITEMS } from '@mobileSenior/features/rides/features/offers/constants/offerItems';
 import { Offer } from '@mobileSenior/features/rides/features/offers/features/offer/Offer';
 
 export function Offers() {
-  return [...Array(5)].map((_, index) => <Offer key={index} />);
+  return OFFER_ITEMS.map((offerItem) => (
+    <Offer key={offerItem.id} item={offerItem} />
+  ));
 }

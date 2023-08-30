@@ -2,14 +2,19 @@ import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/joy/Box';
 import Card from '@mui/joy/Card';
 import IconButton from '@mui/joy/IconButton';
-import Link from '@mui/joy/Link';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import * as React from 'react';
 
-import profile from '@mobileSenior/features/rides/features/offers/features/offer/images/profle.png';
+import { PREFERENCES } from '@mobileSenior/constants/preference';
+import { OfferItem } from '@mobileSenior/features/rides/features/offers/constants/offerItems';
+import { Avatar, Button, Chip } from '@mui/joy';
 
-export function Offer() {
+interface Props {
+  item: OfferItem;
+}
+
+export function Offer({ item }: Props) {
   const [isLiked, setIsLiked] = React.useState(false);
 
   return (
@@ -22,6 +27,7 @@ export function Offer() {
           xs: 0,
           sm: 2,
         },
+        marginTop: { xs: 2, sm: 2.5 },
         boxShadow: 'none',
         borderRadius: 'sm',
         '&:hover': {
@@ -42,7 +48,7 @@ export function Offer() {
           sx={{
             width: {
               xs: '100%',
-              sm: 200,
+              sm: 64,
             },
             marginBottom: {
               xs: -2.5,
@@ -51,7 +57,8 @@ export function Offer() {
           }}
         >
           <AspectRatio
-            ratio={16 / 9}
+            ratio={1}
+            variant="plain"
             sx={(theme) => ({
               borderRadius: 'xs',
               [theme.breakpoints.down('sm')]: {
@@ -60,7 +67,7 @@ export function Offer() {
               },
             })}
           >
-            <img alt="" src={profile} style={{ display: 'block' }} />
+            <Avatar />
             <IconButton
               variant={isLiked ? 'solid' : 'soft'}
               onClick={() => setIsLiked((prev) => !prev)}
@@ -93,17 +100,10 @@ export function Offer() {
           >
             <div>
               <Typography color="primary" fontSize="sm" fontWeight="lg">
-                CATEGORY
+                {item.driver.gender === 'M' ? 'PAN' : 'PANI'}
               </Typography>
               <Typography fontWeight="md" fontSize="lg">
-                <Link
-                  overlay
-                  underline="none"
-                  href="#interactive-card"
-                  sx={{ color: 'text.primary' }}
-                >
-                  TITLE
-                </Link>
+                {item.driver.name} {item.driver.surname}
               </Typography>
             </div>
             <IconButton
@@ -117,34 +117,45 @@ export function Offer() {
             </IconButton>
           </Stack>
           <Stack spacing={1} direction="row">
-            <Typography>202 reviews</Typography>
+            <Typography>{item.driver.description}</Typography>
+          </Stack>
+
+          <Stack spacing={1} direction="row" useFlexGap flexWrap="wrap">
+            {item.preferenceCodes.map((preferenceCode) => (
+              <Chip key={item.id} color="neutral" size="sm" variant="soft">
+                {
+                  PREFERENCES.find(
+                    (preference) => preference.code === preferenceCode,
+                  )?.name
+                }
+              </Chip>
+            ))}
           </Stack>
 
           <Stack spacing={3} direction="row">
             <Typography startDecorator={<i data-feather="map-pin" />}>
-              Collingwood VIC
+              {item.driver.city}
             </Typography>
-            <Typography
-              startDecorator={<i data-feather="box" />}
-              display={{
-                xs: 'none',
-                md: 'flex',
-              }}
+            <Typography startDecorator={<i data-feather="eye" />}>
+              {item.driver.car.vendor} {item.driver.car.model}
+            </Typography>
+            <Typography startDecorator={<i data-feather="sidebar" />}>
+              {item.driver.car.boardNumber}
+            </Typography>
+            <Stack
+              spacing={1}
+              direction="row"
+              alignItems="center"
+              justifyContent="end"
+              flexGrow={1}
             >
-              1 bed
-            </Typography>
-            <Typography
-              startDecorator={<i data-feather="wifi" />}
-              display={{
-                xs: 'none',
-                md: 'flex',
-              }}
-            >
-              Wi-Fi
-            </Typography>
-            <Typography sx={{ flexGrow: 1, textAlign: 'right' }}>
-              <strong>$540</strong> <Typography>total</Typography>
-            </Typography>
+              <Typography>
+                <strong>
+                  {item.price.value} {item.price.currency}
+                </strong>
+              </Typography>
+              <Button size="sm">Rezerwuj</Button>
+            </Stack>
           </Stack>
         </Stack>
       </Stack>
