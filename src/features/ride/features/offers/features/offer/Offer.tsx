@@ -177,8 +177,15 @@ export function Offer({ rideOffer }: Props) {
               justifyContent="end"
               flexGrow={1}
             >
-              <Typography>
+              <Typography
+                color="danger"
+                level="body3"
+                sx={{ textDecoration: 'line-through' }}
+              >
                 <strong>{rideOffer.price} PLN</strong>
+              </Typography>
+              <Typography>
+                <strong>0 PLN</strong>
               </Typography>
               <Button size="sm">Rezerwuj</Button>
             </Stack>
