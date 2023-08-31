@@ -1,6 +1,8 @@
+import { Offer } from '@mobileSenior/features/ride/features/offers/features/offer/Offer';
+import { useApplicationContext } from '@mobileSenior/store/context';
 import { useEnhancedEffect } from '@mobileSenior/utils/useEnhancedEffect';
 import { useScript } from '@mobileSenior/utils/useScript';
-import { Sheet, Typography } from '@mui/joy';
+import { Box, Sheet, Stack, Typography } from '@mui/joy';
 
 export function Home() {
   const status = useScript(`https://unpkg.com/feather-icons`);
@@ -13,6 +15,12 @@ export function Home() {
       feather.replace();
     }
   }, [status]);
+
+  const {
+    state: {
+      reservations: { results: reservations },
+    },
+  } = useApplicationContext();
 
   return (
     <Sheet
@@ -27,6 +35,23 @@ export function Home() {
       <Typography level="h1" fontSize="xl2" sx={{ mb: 1 }}>
         Strona główna
       </Typography>
+      <Box
+        sx={{
+          pt: 3,
+          pb: 3,
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '100%',
+            lg: '80%',
+          },
+        }}
+      >
+        {reservations.map((reservation) => (
+          <Stack key={reservation.id}>
+            <Offer rideOffer={reservation} reserved />
+          </Stack>
+        ))}
+      </Box>
     </Sheet>
   );
 }

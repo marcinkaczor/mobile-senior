@@ -9,6 +9,6 @@ export function Offers() {
   } = useApplicationContext();
 
   return rideOffers.map((rideOffer) => (
-    <Offer key={rideOffer.driverId} rideOffer={rideOffer} />
+    <Offer key={rideOffer.driverId} rideOffer={rideOffer} reserved={false} />
   ));
 }
