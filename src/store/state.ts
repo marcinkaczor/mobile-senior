@@ -1,6 +1,3 @@
-import { DestinationCode } from '@mobileSenior/constants/destination';
-import { PreferenceCode } from '@mobileSenior/constants/preference';
-
 export interface ApplicationState {
   user: {
     name: string;
@@ -15,11 +12,17 @@ export interface ApplicationState {
   rides: {
     id: string;
     driverId: string;
-    destinationCode: DestinationCode;
-    preferenceCode: PreferenceCode;
+    destinationId: string;
     arrivalDateTime: string;
     departureDateTime: string;
+    preferenceId: string;
   }[];
+  rideQuery: {
+    destinationId?: string;
+    arrivalDateTime?: string;
+    departureDateTime?: string;
+    preferenceId?: string;
+  };
 }
 
 export const getDefaultApplicationState = (): ApplicationState => {
@@ -35,5 +38,6 @@ export const getDefaultApplicationState = (): ApplicationState => {
       about: '',
     },
     rides: [],
+    rideQuery: {},
   };
 };

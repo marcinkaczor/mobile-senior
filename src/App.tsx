@@ -12,6 +12,7 @@ import Profile from '@mobileSenior/features/profile/Profile';
 import { Ride } from '@mobileSenior/features/ride/Ride';
 import { Settings } from '@mobileSenior/features/settings/Settings';
 import { Sidebar } from '@mobileSenior/features/sidebar/Sidebar';
+import { ApplicationContextProvider } from '@mobileSenior/store/Provider';
 import { Route, Routes } from 'react-router-dom';
 
 export function App() {
@@ -27,57 +28,59 @@ export function App() {
   }, [status]);
 
   return (
-    <CssVarsProvider disableTransitionOnChange theme={customTheme}>
-      <GlobalStyles
-        styles={{
-          '[data-feather], .feather': {
-            color: 'var(--Icon-color)',
-            margin: 'var(--Icon-margin)',
-            fontSize: 'var(--Icon-fontSize, 20px)',
-            width: '1em',
-            height: '1em',
-          },
-        }}
-      />
-      <CssBaseline />
-      <Box sx={{ display: 'flex', minHeight: '100dvh' }}>
-        <Navbar />
-        <Sidebar />
-        <Box
-          component="main"
-          className="MainContent"
-          sx={(theme) => ({
-            '--main-paddingTop': {
-              xs: `calc(${theme.spacing(2)} + var(--Header-height, 0px))`,
-              md: '32px',
+    <ApplicationContextProvider>
+      <CssVarsProvider disableTransitionOnChange theme={customTheme}>
+        <GlobalStyles
+          styles={{
+            '[data-feather], .feather': {
+              color: 'var(--Icon-color)',
+              margin: 'var(--Icon-margin)',
+              fontSize: 'var(--Icon-fontSize, 20px)',
+              width: '1em',
+              height: '1em',
             },
-            px: {
-              xs: 2,
-              md: 3,
-            },
-            pt: 'var(--main-paddingTop)',
-            pb: {
-              xs: 2,
-              sm: 2,
-              md: 3,
-            },
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            minWidth: 0,
-            height: '100dvh',
-            gap: 1,
-            overflow: 'auto',
-          })}
-        >
-          <Routes>
-            <Route path={ROUTER.HOME} element={<Home />} />
-            <Route path={ROUTER.RIDE} element={<Ride />} />
-            <Route path={ROUTER.PROFILE} element={<Profile />} />
-            <Route path={ROUTER.SETTINGS} element={<Settings />} />
-          </Routes>
+          }}
+        />
+        <CssBaseline />
+        <Box sx={{ display: 'flex', minHeight: '100dvh' }}>
+          <Navbar />
+          <Sidebar />
+          <Box
+            component="main"
+            className="MainContent"
+            sx={(theme) => ({
+              '--main-paddingTop': {
+                xs: `calc(${theme.spacing(2)} + var(--Header-height, 0px))`,
+                md: '32px',
+              },
+              px: {
+                xs: 2,
+                md: 3,
+              },
+              pt: 'var(--main-paddingTop)',
+              pb: {
+                xs: 2,
+                sm: 2,
+                md: 3,
+              },
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              minWidth: 0,
+              height: '100dvh',
+              gap: 1,
+              overflow: 'auto',
+            })}
+          >
+            <Routes>
+              <Route path={ROUTER.HOME} element={<Home />} />
+              <Route path={ROUTER.RIDE} element={<Ride />} />
+              <Route path={ROUTER.PROFILE} element={<Profile />} />
+              <Route path={ROUTER.SETTINGS} element={<Settings />} />
+            </Routes>
+          </Box>
         </Box>
-      </Box>
-    </CssVarsProvider>
+      </CssVarsProvider>
+    </ApplicationContextProvider>
   );
 }

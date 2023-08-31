@@ -1,6 +1,7 @@
 import { DESTINATIONS } from '@mobileSenior/constants/destination';
 import { PREFERENCES } from '@mobileSenior/constants/preference';
 import { Offers } from '@mobileSenior/features/ride/features/offers/Offers';
+import { useApplicationContext } from '@mobileSenior/store/context';
 import { useEnhancedEffect } from '@mobileSenior/utils/useEnhancedEffect';
 import { useScript } from '@mobileSenior/utils/useScript';
 import {
@@ -26,6 +27,13 @@ export function Ride() {
       feather.replace();
     }
   }, [status]);
+
+  const {
+    setRideQueryDestinationId,
+    setRideQueryArrivalDateTime,
+    setRideQueryDepartureDateTime,
+    setRideQueryPreferenceId,
+  } = useApplicationContext();
 
   return (
     <Sheet
@@ -66,6 +74,9 @@ export function Ride() {
                 placeholder="Placówka współpracująca z NFZ"
                 startDecorator={<i data-feather="map-pin" />}
                 defaultValue=""
+                onChange={(_, value) =>
+                  value && setRideQueryDestinationId(value)
+                }
               >
                 {DESTINATIONS.map((destination) => (
                   <Option key={destination.id} value={destination.id}>
@@ -82,7 +93,9 @@ export function Ride() {
                 type="datetime-local"
                 placeholder="Data i godzina odbioru"
                 value="2023-01-01T14:00"
-                onChange={(event) => window.console.log(event)}
+                onChange={(event) =>
+                  setRideQueryArrivalDateTime(event.target.value)
+                }
               />
             </FormControl>
           </Box>
@@ -92,13 +105,22 @@ export function Ride() {
               <Input
                 type="datetime-local"
                 placeholder="Data i godzina powrotu"
+                onChange={(event) =>
+                  setRideQueryDepartureDateTime(event.target.value)
+                }
               />
             </FormControl>
           </Box>
           <Box gridColumn="span 6">
             <FormControl>
               <FormLabel>Preferencje</FormLabel>
-              <Select placeholder="Osobiste preferencje">
+              <Select
+                placeholder="Osobiste preferencje"
+                defaultValue=""
+                onChange={(_, value) =>
+                  value && setRideQueryPreferenceId(value)
+                }
+              >
                 {PREFERENCES.map((preference) => (
                   <Option key={preference.id} value={preference.id}>
                     {preference.description}
