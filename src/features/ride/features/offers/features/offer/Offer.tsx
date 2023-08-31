@@ -6,18 +6,16 @@ import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import * as React from 'react';
 
-import { DESTINATIONS } from '@mobileSenior/constants/destination';
 import { DRIVERS, DriverGender } from '@mobileSenior/constants/driver';
 import { PREFERENCES } from '@mobileSenior/constants/preference';
 import { ROUTER } from '@mobileSenior/constants/router';
 import { useReserveCommand } from '@mobileSenior/features/ride/features/offers/features/offer/commands/reserve';
 import { useApplicationContext } from '@mobileSenior/store/context';
 import { RideOffer } from '@mobileSenior/types/rideOffer';
-import { formatDateToDisplay } from '@mobileSenior/utils/formatDateToDisplay';
 import { QueryStatus } from '@mobileSenior/utils/queryStatus';
 import { useEnhancedEffect } from '@mobileSenior/utils/useEnhancedEffect';
 import { useScript } from '@mobileSenior/utils/useScript';
-import { Avatar, Button, Chip, Divider } from '@mui/joy';
+import { Avatar, Button, Chip } from '@mui/joy';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {
@@ -219,95 +217,6 @@ export function Offer({ rideOffer, reserved }: Props) {
               )}
             </Stack>
           </Stack>
-
-          {reserved && (
-            <>
-              <Divider orientation="horizontal" />
-              <Stack
-                spacing={1}
-                direction="row"
-                justifyContent="space-between"
-                alignItems="flex-start"
-              >
-                <div>
-                  <Typography fontWeight="md" fontSize="lg">
-                    Cele
-                  </Typography>
-                </div>
-              </Stack>
-              <Stack spacing={1} direction="row" useFlexGap flexWrap="wrap">
-                {rideOffer.destinationIds.map((destinationId) => (
-                  <Chip
-                    key={destinationId}
-                    color="neutral"
-                    size="sm"
-                    variant="soft"
-                  >
-                    {
-                      DESTINATIONS.find(
-                        (destination) => destination.id === destinationId,
-                      )?.name
-                    }
-                  </Chip>
-                ))}
-              </Stack>
-
-              <Stack spacing={1} direction="row">
-                <div>
-                  <Typography fontWeight="md" fontSize="lg">
-                    Odbiór
-                  </Typography>
-                </div>
-              </Stack>
-              <Stack spacing={1} direction="row">
-                <Typography>
-                  {formatDateToDisplay(new Date(rideOffer.arrivalDateTime))}
-                </Typography>
-              </Stack>
-
-              <Stack spacing={1} direction="row">
-                <div>
-                  <Typography fontWeight="md" fontSize="lg">
-                    Powrót
-                  </Typography>
-                </div>
-              </Stack>
-              <Stack spacing={1} direction="row">
-                <Typography>
-                  {formatDateToDisplay(new Date(rideOffer.departureDateTime))}
-                </Typography>
-              </Stack>
-
-              <Stack
-                spacing={1}
-                direction="row"
-                justifyContent="space-between"
-                alignItems="flex-start"
-              >
-                <div>
-                  <Typography fontWeight="md" fontSize="lg">
-                    Preferencje
-                  </Typography>
-                </div>
-              </Stack>
-              <Stack spacing={1} direction="row" useFlexGap flexWrap="wrap">
-                {rideOffer.preferenceIds.map((preferenceId) => (
-                  <Chip
-                    key={preferenceId}
-                    color="neutral"
-                    size="sm"
-                    variant="soft"
-                  >
-                    {
-                      PREFERENCES.find(
-                        (preference) => preference.id === preferenceId,
-                      )?.name
-                    }
-                  </Chip>
-                ))}
-              </Stack>
-            </>
-          )}
         </Stack>
       </Stack>
     </Card>
