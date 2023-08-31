@@ -7,6 +7,4 @@ export interface User {
   district: string;
   postalCode: string;
   about: string;
-  ridesUsed: number;
-  ridesTotal: number;
 }

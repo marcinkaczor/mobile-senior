@@ -28,8 +28,6 @@ export const getDefaultApplicationState = (): ApplicationState => {
       district: '',
       postalCode: '',
       about: '',
-      ridesUsed: 2,
-      ridesTotal: 3,
     },
     reservations: {
       queryStatus: QueryStatus.Initial,

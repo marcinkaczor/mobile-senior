@@ -24,11 +24,7 @@ import { Link as RouterLink } from 'react-router-dom';
 export function Sidebar() {
   const [isCardVisible, setCardVisible] = useState(true);
 
-  const {
-    state: {
-      user: { ridesUsed, ridesTotal },
-    },
-  } = useApplicationContext();
+  const { ridesTotal, ridesUsed } = useApplicationContext();
 
   const ridesLeft = ridesTotal - ridesUsed;
 
@@ -46,11 +42,11 @@ export function Sidebar() {
     secondPhrase = 'Pozostały';
   }
 
-  let thirdPhrase = 'przejazdów.';
+  let thirdPhrase = 'darmowych przejazdów.';
   if (ridesLeft === 1) {
-    thirdPhrase = 'przejazd.';
+    thirdPhrase = 'darmowy przejazd.';
   } else if ([2, 3, 4].includes(ridesLeft)) {
-    thirdPhrase = 'przejazdy.';
+    thirdPhrase = 'darmowe przejazdy.';
   }
 
   return (
@@ -191,7 +187,11 @@ export function Sidebar() {
             oferowane przez gminę <b>Ogrodzieniec</b>. {secondPhrase} Ci do{' '}
             wykorzystania <b>{ridesLeft}</b> {thirdPhrase}
           </Typography>
-          <LinearProgress value={200 / 3} determinate sx={{ my: 1.5 }} />
+          <LinearProgress
+            value={(100 * ridesUsed) / ridesTotal}
+            determinate
+            sx={{ my: 1.5 }}
+          />
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
             <Link
               fontSize="sm"

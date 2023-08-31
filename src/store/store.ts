@@ -12,7 +12,8 @@ import { useCallback, useMemo, useState } from 'react';
 export interface ApplicationStore {
   state: ApplicationState;
 
-  // reserve: (driverId: string) => void;
+  ridesTotal: number;
+  ridesUsed: number;
   setReservations: (queryStatus: QueryStatus, results?: Reservation[]) => void;
   clear: () => void;
   setRideOffers: (queryStatus: QueryStatus, results?: RideOffer[]) => void;
@@ -25,30 +26,8 @@ export interface ApplicationStore {
 export const useCreateApplicationStore = (): ApplicationStore => {
   const [state, setState] = useState(getDefaultApplicationState());
 
-  // const reserve = useCallback(
-  //   (driverId: string) =>
-  //     setState((prevState) => {
-  //       const rideOffer = prevState.rideOffers.results.find(
-  //         (rideOffer) => rideOffer.driverId === driverId,
-  //       );
-
-  //       if (!rideOffer) {
-  //         return prevState;
-  //       }
-
-  //       return {
-  //         ...prevState,
-  //         reservations: [
-  //           ...prevState.reservations,
-  //           {
-  //             id: uuidv4(),
-  //             ...rideOffer,
-  //           },
-  //         ],
-  //       };
-  //     }),
-  //   [],
-  // );
+  const ridesTotal = 3;
+  const ridesUsed = state.reservations.results.length;
 
   const setReservations = useCallback(
     (queryStatus: QueryStatus, results?: Reservation[]) =>
@@ -129,7 +108,8 @@ export const useCreateApplicationStore = (): ApplicationStore => {
     () => ({
       state,
 
-      // reserve,
+      ridesTotal,
+      ridesUsed,
       setReservations,
       clear,
       setRideOffers,
@@ -140,7 +120,8 @@ export const useCreateApplicationStore = (): ApplicationStore => {
     }),
     [
       state,
-      // reserve,
+      ridesTotal,
+      ridesUsed,
       setReservations,
       clear,
       setRideOffers,

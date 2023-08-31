@@ -35,7 +35,7 @@ export function Home() {
         mx: 'auto',
       }}
     >
-      <Typography level="h1" fontSize="xl2" sx={{ mb: 1 }}>
+      <Typography level="h1" fontSize="xl2">
         Strona główna
       </Typography>
       <Box
@@ -180,7 +180,9 @@ export function Home() {
                   </Chip>
                 ))}
               </Stack>
-              <Offer rideOffer={reservation} reserved />
+              <Stack marginTop={1}>
+                <Offer rideOffer={reservation} reserved />
+              </Stack>
             </Stack>
           </Card>
         ))}
