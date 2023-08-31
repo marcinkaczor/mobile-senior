@@ -1,8 +1,14 @@
-import { OFFER_ITEMS } from '@mobileSenior/features/ride/features/offers/constants/offerItems';
 import { Offer } from '@mobileSenior/features/ride/features/offers/features/offer/Offer';
+import { useApplicationContext } from '@mobileSenior/store/context';
 
 export function Offers() {
-  return OFFER_ITEMS.map((offerItem) => (
-    <Offer key={offerItem.id} item={offerItem} />
+  const {
+    state: {
+      rideOffers: { results: rideOffers },
+    },
+  } = useApplicationContext();
+
+  return rideOffers.map((rideOffer) => (
+    <Offer key={rideOffer.driverId} rideOffer={rideOffer} />
   ));
 }

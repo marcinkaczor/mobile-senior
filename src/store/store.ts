@@ -1,33 +1,61 @@
+import { Destination } from '@mobileSenior/constants/destination';
 import { Preference } from '@mobileSenior/constants/preference';
 import {
   ApplicationState,
   getDefaultApplicationState,
 } from '@mobileSenior/store/state';
+import { RideOffer } from '@mobileSenior/types/rideOffer';
+import { QueryStatus } from '@mobileSenior/utils/queryStatus';
 import { useCallback, useMemo, useState } from 'react';
 
 export interface ApplicationStore {
   state: ApplicationState;
 
-  setRideQueryDestinationId: (destinationId?: string) => void;
-  setRideQueryArrivalDateTime: (arrivalDateTime?: string) => void;
-  setRideQueryDepartureDateTime: (departureDateTime?: string) => void;
+  clear: () => void;
+  setRideOffers: (queryStatus: QueryStatus, results?: RideOffer[]) => void;
+  setRideQueryDestinations: (destinations: Destination[]) => void;
+  setRideQueryArrivalDateTime: (arrivalDateTime: string) => void;
+  setRideQueryDepartureDateTime: (departureDateTime: string) => void;
   setRideQueryPreferences: (preferences: Preference[]) => void;
 }
 
 export const useCreateApplicationStore = (): ApplicationStore => {
   const [state, setState] = useState(getDefaultApplicationState());
 
-  const setRideQueryDestinationId = useCallback(
-    (destinationId?: string) =>
+  const clear = useCallback(
+    () =>
       setState((prevState) => ({
         ...prevState,
-        rideQuery: { ...prevState.rideQuery, destinationId },
+        rideOffers: getDefaultApplicationState().rideOffers,
+        rideQuery: getDefaultApplicationState().rideQuery,
+      })),
+    [],
+  );
+
+  const setRideOffers = useCallback(
+    (queryStatus: QueryStatus, results?: RideOffer[]) =>
+      setState((prevState) => ({
+        ...prevState,
+        rideOffers: {
+          ...prevState.rideOffers,
+          queryStatus,
+          ...(results && { results }),
+        },
+      })),
+    [],
+  );
+
+  const setRideQueryDestinations = useCallback(
+    (destinations: Destination[]) =>
+      setState((prevState) => ({
+        ...prevState,
+        rideQuery: { ...prevState.rideQuery, destinations },
       })),
     [],
   );
 
   const setRideQueryArrivalDateTime = useCallback(
-    (arrivalDateTime?: string) =>
+    (arrivalDateTime: string) =>
       setState((prevState) => ({
         ...prevState,
         rideQuery: { ...prevState.rideQuery, arrivalDateTime },
@@ -36,7 +64,7 @@ export const useCreateApplicationStore = (): ApplicationStore => {
   );
 
   const setRideQueryDepartureDateTime = useCallback(
-    (departureDateTime?: string) =>
+    (departureDateTime: string) =>
       setState((prevState) => ({
         ...prevState,
         rideQuery: { ...prevState.rideQuery, departureDateTime },
@@ -60,14 +88,18 @@ export const useCreateApplicationStore = (): ApplicationStore => {
     () => ({
       state,
 
-      setRideQueryDestinationId,
+      clear,
+      setRideOffers,
+      setRideQueryDestinations,
       setRideQueryArrivalDateTime,
       setRideQueryDepartureDateTime,
       setRideQueryPreferences,
     }),
     [
       state,
-      setRideQueryDestinationId,
+      clear,
+      setRideOffers,
+      setRideQueryDestinations,
       setRideQueryArrivalDateTime,
       setRideQueryDepartureDateTime,
       setRideQueryPreferences,

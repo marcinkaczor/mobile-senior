@@ -1,31 +1,17 @@
-import { Preference } from '@mobileSenior/constants/preference';
+import { Reservation } from '@mobileSenior/types/reservation';
+import { RideOffer } from '@mobileSenior/types/rideOffer';
+import { RideQuery } from '@mobileSenior/types/rideQuery';
+import { User } from '@mobileSenior/types/user';
+import { QueryStatus } from '@mobileSenior/utils/queryStatus';
 
 export interface ApplicationState {
-  user: {
-    name: string;
-    surname: string;
-    email: string;
-    street: string;
-    commune: string;
-    district: string;
-    postalCode: string;
-    about: string;
+  user: User;
+  reservations: Reservation[];
+  rideOffers: {
+    queryStatus: QueryStatus;
+    results: RideOffer[];
   };
-  rides: {
-    id: string;
-    driverId: string;
-    destinationId: string;
-    arrivalDateTime: string;
-    departureDateTime: string;
-    preferenceId: string;
-  }[];
-  rideOffers: {}[];
-  rideQuery: {
-    destinationId?: string;
-    arrivalDateTime?: string;
-    departureDateTime?: string;
-    preferences: Preference[];
-  };
+  rideQuery: RideQuery;
 }
 
 export const getDefaultApplicationState = (): ApplicationState => {
@@ -40,9 +26,15 @@ export const getDefaultApplicationState = (): ApplicationState => {
       postalCode: '',
       about: '',
     },
-    rides: [],
-    rideOffers: [],
+    reservations: [],
+    rideOffers: {
+      queryStatus: QueryStatus.Initial,
+      results: [],
+    },
     rideQuery: {
+      destinations: [],
+      arrivalDateTime: '2023-09-01T11:00',
+      departureDateTime: '2023-09-01T13:00',
       preferences: [],
     },
   };

@@ -1,7 +1,9 @@
 import { DESTINATIONS } from '@mobileSenior/constants/destination';
 import { PREFERENCES } from '@mobileSenior/constants/preference';
 import { Offers } from '@mobileSenior/features/ride/features/offers/Offers';
+import { useSearchCommand } from '@mobileSenior/features/ride/features/offers/commands/search';
 import { useApplicationContext } from '@mobileSenior/store/context';
+import { QueryStatus } from '@mobileSenior/utils/queryStatus';
 import { useEnhancedEffect } from '@mobileSenior/utils/useEnhancedEffect';
 import { useScript } from '@mobileSenior/utils/useScript';
 import {
@@ -11,8 +13,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Option,
-  Select,
   Sheet,
   Typography,
 } from '@mui/joy';
@@ -31,13 +31,22 @@ export function Ride() {
 
   const {
     state: {
-      rideQuery: { preferences },
+      rideOffers: { queryStatus },
+      rideQuery: {
+        destinations,
+        arrivalDateTime,
+        departureDateTime,
+        preferences,
+      },
     },
-    setRideQueryDestinationId,
+    clear,
+    setRideQueryDestinations,
     setRideQueryArrivalDateTime,
     setRideQueryDepartureDateTime,
     setRideQueryPreferences,
   } = useApplicationContext();
+
+  const search = useSearchCommand();
 
   return (
     <Sheet
@@ -74,53 +83,54 @@ export function Ride() {
           <Box gridColumn="span 12">
             <FormControl>
               <FormLabel>Cel</FormLabel>
-              <Select
+              <Autocomplete
+                multiple
+                disabled={queryStatus === QueryStatus.InProgress}
                 placeholder="Placówka współpracująca z NFZ"
                 startDecorator={<i data-feather="map-pin" />}
-                defaultValue=""
-                onChange={(_, value) =>
-                  value && setRideQueryDestinationId(value)
-                }
-              >
-                {DESTINATIONS.map((destination) => (
-                  <Option key={destination.id} value={destination.id}>
-                    {destination.name}
-                  </Option>
-                ))}
-              </Select>
+                getOptionLabel={(option) => option.name}
+                value={destinations}
+                options={DESTINATIONS}
+                onChange={(_, value) => setRideQueryDestinations(value)}
+              />
             </FormControl>
           </Box>
-          <Box gridColumn="span 3">
+          <Box gridColumn="span 6">
             <FormControl>
               <FormLabel>Odbiór</FormLabel>
               <Input
+                disabled={queryStatus === QueryStatus.InProgress}
                 type="datetime-local"
                 placeholder="Data i godzina odbioru"
-                value="2023-01-01T14:00"
+                value={arrivalDateTime}
                 onChange={(event) =>
                   setRideQueryArrivalDateTime(event.target.value)
                 }
               />
             </FormControl>
           </Box>
-          <Box gridColumn="span 3">
+          <Box gridColumn="span 6">
             <FormControl>
               <FormLabel>Powrót</FormLabel>
               <Input
+                disabled={queryStatus === QueryStatus.InProgress}
                 type="datetime-local"
                 placeholder="Data i godzina powrotu"
+                value={departureDateTime}
                 onChange={(event) =>
                   setRideQueryDepartureDateTime(event.target.value)
                 }
               />
             </FormControl>
           </Box>
-          <Box gridColumn="span 6">
+          <Box gridColumn="span 12">
             <FormControl>
               <FormLabel>Preferencje</FormLabel>
               <Autocomplete
                 multiple
+                disabled={queryStatus === QueryStatus.InProgress}
                 placeholder="Osobiste preferencje"
+                startDecorator={<i data-feather="hash" />}
                 getOptionLabel={(option) => option.description}
                 value={preferences}
                 options={PREFERENCES}
@@ -135,7 +145,23 @@ export function Ride() {
               display: 'flex',
             }}
           >
-            <Button size="sm">Szukaj</Button>
+            <Button
+              color="neutral"
+              disabled={queryStatus === QueryStatus.InProgress}
+              size="sm"
+              sx={{ marginRight: 1 }}
+              variant="outlined"
+              onClick={clear}
+            >
+              Wyczyść wyniki wyszukiwania
+            </Button>
+            <Button
+              disabled={queryStatus === QueryStatus.InProgress}
+              size="sm"
+              onClick={search}
+            >
+              Szukaj
+            </Button>
           </Box>
         </Box>
         <Offers />

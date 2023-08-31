@@ -6,16 +6,39 @@ import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import * as React from 'react';
 
+import { DRIVERS, DriverGender } from '@mobileSenior/constants/driver';
 import { PREFERENCES } from '@mobileSenior/constants/preference';
-import { OfferItem } from '@mobileSenior/features/ride/features/offers/constants/offerItems';
+import { RideOffer } from '@mobileSenior/types/rideOffer';
+import { useEnhancedEffect } from '@mobileSenior/utils/useEnhancedEffect';
+import { useScript } from '@mobileSenior/utils/useScript';
 import { Avatar, Button, Chip } from '@mui/joy';
 
 interface Props {
-  item: OfferItem;
+  rideOffer: RideOffer;
 }
 
-export function Offer({ item }: Props) {
+export function Offer({ rideOffer }: Props) {
+  const status = useScript(`https://unpkg.com/feather-icons`);
+
+  useEnhancedEffect(() => {
+    // Feather icon setup: https://github.com/feathericons/feather#4-replace
+    // @ts-ignore
+    if (typeof feather !== 'undefined') {
+      // @ts-ignore
+      feather.replace();
+    }
+  }, [status]);
+
   const [isLiked, setIsLiked] = React.useState(false);
+
+  const rideOfferDriver = React.useMemo(
+    () => DRIVERS.find((driver) => rideOffer.driverId === driver.id),
+    [rideOffer.driverId],
+  );
+
+  if (!rideOfferDriver) {
+    return null;
+  }
 
   return (
     <Card
@@ -100,10 +123,10 @@ export function Offer({ item }: Props) {
           >
             <div>
               <Typography color="primary" fontSize="sm" fontWeight="lg">
-                {item.driver.gender === 'M' ? 'PAN' : 'PANI'}
+                {rideOfferDriver.gender === DriverGender.Man ? 'PAN' : 'PANI'}
               </Typography>
               <Typography fontWeight="md" fontSize="lg">
-                {item.driver.name} {item.driver.surname}
+                {rideOfferDriver.name} {rideOfferDriver.surname}
               </Typography>
             </div>
             <IconButton
@@ -117,12 +140,17 @@ export function Offer({ item }: Props) {
             </IconButton>
           </Stack>
           <Stack spacing={1} direction="row">
-            <Typography>{item.driver.description}</Typography>
+            <Typography>{rideOfferDriver.description}</Typography>
           </Stack>
 
           <Stack spacing={1} direction="row" useFlexGap flexWrap="wrap">
-            {item.preferenceCodes.map((preferenceCode) => (
-              <Chip key={item.id} color="neutral" size="sm" variant="soft">
+            {rideOfferDriver.preferenceCodes.map((preferenceCode) => (
+              <Chip
+                key={preferenceCode}
+                color="neutral"
+                size="sm"
+                variant="soft"
+              >
                 {
                   PREFERENCES.find(
                     (preference) => preference.code === preferenceCode,
@@ -134,13 +162,13 @@ export function Offer({ item }: Props) {
 
           <Stack spacing={3} direction="row">
             <Typography startDecorator={<i data-feather="map-pin" />}>
-              {item.driver.city}
+              {rideOfferDriver.city}
             </Typography>
             <Typography startDecorator={<i data-feather="eye" />}>
-              {item.driver.car.vendor} {item.driver.car.model}
+              {rideOfferDriver.car.vendor} {rideOfferDriver.car.model}
             </Typography>
             <Typography startDecorator={<i data-feather="sidebar" />}>
-              {item.driver.car.boardNumber}
+              {rideOfferDriver.car.boardNumber}
             </Typography>
             <Stack
               spacing={1}
@@ -150,9 +178,7 @@ export function Offer({ item }: Props) {
               flexGrow={1}
             >
               <Typography>
-                <strong>
-                  {item.price.value} {item.price.currency}
-                </strong>
+                <strong>{rideOffer.price} PLN</strong>
               </Typography>
               <Button size="sm">Rezerwuj</Button>
             </Stack>
