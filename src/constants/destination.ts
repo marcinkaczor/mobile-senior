@@ -16,7 +16,7 @@ export interface Destination {
   address: string;
 }
 
-export const DESTINATIONS = [
+export const DESTINATIONS: Destination[] = [
   {
     id: uuidv4(),
     code: DestinationCode.ZOZ,

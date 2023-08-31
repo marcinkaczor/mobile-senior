@@ -1,3 +1,5 @@
+import { Preference } from '@mobileSenior/constants/preference';
+
 export interface ApplicationState {
   user: {
     name: string;
@@ -17,11 +19,12 @@ export interface ApplicationState {
     departureDateTime: string;
     preferenceId: string;
   }[];
+  rideOffers: {}[];
   rideQuery: {
     destinationId?: string;
     arrivalDateTime?: string;
     departureDateTime?: string;
-    preferenceId?: string;
+    preferences: Preference[];
   };
 }
 
@@ -38,6 +41,9 @@ export const getDefaultApplicationState = (): ApplicationState => {
       about: '',
     },
     rides: [],
-    rideQuery: {},
+    rideOffers: [],
+    rideQuery: {
+      preferences: [],
+    },
   };
 };

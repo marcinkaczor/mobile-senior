@@ -1,3 +1,4 @@
+import { Preference } from '@mobileSenior/constants/preference';
 import {
   ApplicationState,
   getDefaultApplicationState,
@@ -10,7 +11,7 @@ export interface ApplicationStore {
   setRideQueryDestinationId: (destinationId?: string) => void;
   setRideQueryArrivalDateTime: (arrivalDateTime?: string) => void;
   setRideQueryDepartureDateTime: (departureDateTime?: string) => void;
-  setRideQueryPreferenceId: (preferenceId?: string) => void;
+  setRideQueryPreferences: (preferences: Preference[]) => void;
 }
 
 export const useCreateApplicationStore = (): ApplicationStore => {
@@ -43,11 +44,14 @@ export const useCreateApplicationStore = (): ApplicationStore => {
     [],
   );
 
-  const setRideQueryPreferenceId = useCallback(
-    (preferenceId?: string) =>
+  const setRideQueryPreferences = useCallback(
+    (preferences: Preference[]) =>
       setState((prevState) => ({
         ...prevState,
-        rideQuery: { ...prevState.rideQuery, preferenceId },
+        rideQuery: {
+          ...prevState.rideQuery,
+          preferences,
+        },
       })),
     [],
   );
@@ -59,14 +63,14 @@ export const useCreateApplicationStore = (): ApplicationStore => {
       setRideQueryDestinationId,
       setRideQueryArrivalDateTime,
       setRideQueryDepartureDateTime,
-      setRideQueryPreferenceId,
+      setRideQueryPreferences,
     }),
     [
       state,
       setRideQueryDestinationId,
       setRideQueryArrivalDateTime,
       setRideQueryDepartureDateTime,
-      setRideQueryPreferenceId,
+      setRideQueryPreferences,
     ],
   );
 };

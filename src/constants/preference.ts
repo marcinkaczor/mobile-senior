@@ -13,9 +13,10 @@ export interface Preference {
   id: string;
   code: PreferenceCode;
   name: string;
+  description: string;
 }
 
-export const PREFERENCES = [
+export const PREFERENCES: Preference[] = [
   {
     id: uuidv4(),
     code: PreferenceCode.PickUpFrom,

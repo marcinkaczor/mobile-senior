@@ -5,6 +5,7 @@ import { useApplicationContext } from '@mobileSenior/store/context';
 import { useEnhancedEffect } from '@mobileSenior/utils/useEnhancedEffect';
 import { useScript } from '@mobileSenior/utils/useScript';
 import {
+  Autocomplete,
   Box,
   Button,
   FormControl,
@@ -29,10 +30,13 @@ export function Ride() {
   }, [status]);
 
   const {
+    state: {
+      rideQuery: { preferences },
+    },
     setRideQueryDestinationId,
     setRideQueryArrivalDateTime,
     setRideQueryDepartureDateTime,
-    setRideQueryPreferenceId,
+    setRideQueryPreferences,
   } = useApplicationContext();
 
   return (
@@ -114,19 +118,14 @@ export function Ride() {
           <Box gridColumn="span 6">
             <FormControl>
               <FormLabel>Preferencje</FormLabel>
-              <Select
+              <Autocomplete
+                multiple
                 placeholder="Osobiste preferencje"
-                defaultValue=""
-                onChange={(_, value) =>
-                  value && setRideQueryPreferenceId(value)
-                }
-              >
-                {PREFERENCES.map((preference) => (
-                  <Option key={preference.id} value={preference.id}>
-                    {preference.description}
-                  </Option>
-                ))}
-              </Select>
+                getOptionLabel={(option) => option.description}
+                value={preferences}
+                options={PREFERENCES}
+                onChange={(_, value) => setRideQueryPreferences(value)}
+              />
             </FormControl>
           </Box>
           <Box
