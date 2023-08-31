@@ -1,4 +1,5 @@
 import { ROUTER } from '@mobileSenior/constants/router';
+import { useApplicationContext } from '@mobileSenior/store/context';
 import { ColorSchemeToggle } from '@mobileSenior/utils/ColorSchemeToggle';
 import { closeSidebar } from '@mobileSenior/utils/sidebar';
 import { Link } from '@mui/joy';
@@ -22,6 +23,35 @@ import { Link as RouterLink } from 'react-router-dom';
 
 export function Sidebar() {
   const [isCardVisible, setCardVisible] = useState(true);
+
+  const {
+    state: {
+      user: { ridesUsed, ridesTotal },
+    },
+  } = useApplicationContext();
+
+  const ridesLeft = ridesTotal - ridesUsed;
+
+  let firstPhrase = 'przejazdów oferowanych';
+  if (ridesUsed === 1) {
+    firstPhrase = 'przejazd oferowany';
+  } else if ([2, 3, 4].includes(ridesUsed)) {
+    firstPhrase = 'przejazdy oferowane';
+  }
+
+  let secondPhrase = 'Pozostało';
+  if (ridesLeft === 1) {
+    secondPhrase = 'Pozostał';
+  } else if ([2, 3, 4].includes(ridesLeft)) {
+    secondPhrase = 'Pozostały';
+  }
+
+  let thirdPhrase = 'przejazdów.';
+  if (ridesLeft === 1) {
+    thirdPhrase = 'przejazd.';
+  } else if ([2, 3, 4].includes(ridesLeft)) {
+    thirdPhrase = 'przejazdy.';
+  }
 
   return (
     <Sheet
@@ -157,9 +187,9 @@ export function Sidebar() {
             Wykorzystane przejazdy
           </Typography>
           <Typography level="body3">
-            Wykorzystałeś w tym miesiącu <b>2</b> przejazdy oferowane przez
-            gminę <b>Ogrodzieniec</b>. Pozostał Ci do wykorzystania <b>1</b>{' '}
-            przejazd.
+            Wykorzystałeś w tym miesiącu <b>{ridesUsed}</b> {firstPhrase}{' '}
+            oferowane przez gminę <b>Ogrodzieniec</b>. {secondPhrase} Ci do{' '}
+            wykorzystania <b>{ridesLeft}</b> {thirdPhrase}
           </Typography>
           <LinearProgress value={200 / 3} determinate sx={{ my: 1.5 }} />
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>

@@ -16,6 +16,7 @@ import {
   Sheet,
   Typography,
 } from '@mui/joy';
+import { useEffect } from 'react';
 
 export function Ride() {
   const status = useScript(`https://unpkg.com/feather-icons`);
@@ -47,6 +48,10 @@ export function Ride() {
   } = useApplicationContext();
 
   const search = useSearchCommand();
+
+  useEffect(() => {
+    return clear();
+  }, [clear]);
 
   return (
     <Sheet

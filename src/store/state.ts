@@ -6,7 +6,10 @@ import { QueryStatus } from '@mobileSenior/utils/queryStatus';
 
 export interface ApplicationState {
   user: User;
-  reservations: Reservation[];
+  reservations: {
+    queryStatus: QueryStatus;
+    results: Reservation[];
+  };
   rideOffers: {
     queryStatus: QueryStatus;
     results: RideOffer[];
@@ -25,8 +28,13 @@ export const getDefaultApplicationState = (): ApplicationState => {
       district: '',
       postalCode: '',
       about: '',
+      ridesUsed: 2,
+      ridesTotal: 3,
     },
-    reservations: [],
+    reservations: {
+      queryStatus: QueryStatus.Initial,
+      results: [],
+    },
     rideOffers: {
       queryStatus: QueryStatus.Initial,
       results: [],

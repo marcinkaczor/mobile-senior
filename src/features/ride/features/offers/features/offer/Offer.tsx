@@ -8,7 +8,10 @@ import * as React from 'react';
 
 import { DRIVERS, DriverGender } from '@mobileSenior/constants/driver';
 import { PREFERENCES } from '@mobileSenior/constants/preference';
+import { useReserveCommand } from '@mobileSenior/features/ride/features/offers/features/offer/commands/reserve';
+import { useApplicationContext } from '@mobileSenior/store/context';
 import { RideOffer } from '@mobileSenior/types/rideOffer';
+import { QueryStatus } from '@mobileSenior/utils/queryStatus';
 import { useEnhancedEffect } from '@mobileSenior/utils/useEnhancedEffect';
 import { useScript } from '@mobileSenior/utils/useScript';
 import { Avatar, Button, Chip } from '@mui/joy';
@@ -30,6 +33,14 @@ export function Offer({ rideOffer }: Props) {
   }, [status]);
 
   const [isLiked, setIsLiked] = React.useState(false);
+
+  const {
+    state: {
+      reservations: { queryStatus },
+    },
+  } = useApplicationContext();
+
+  const reserve = useReserveCommand();
 
   const rideOfferDriver = React.useMemo(
     () => DRIVERS.find((driver) => rideOffer.driverId === driver.id),
@@ -187,7 +198,13 @@ export function Offer({ rideOffer }: Props) {
               <Typography>
                 <strong>0 PLN</strong>
               </Typography>
-              <Button size="sm">Rezerwuj</Button>
+              <Button
+                disabled={queryStatus === QueryStatus.InProgress}
+                size="sm"
+                onClick={() => reserve(rideOffer.driverId)}
+              >
+                Rezerwuj
+              </Button>
             </Stack>
           </Stack>
         </Stack>

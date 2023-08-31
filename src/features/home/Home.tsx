@@ -1,5 +1,6 @@
 import { useEnhancedEffect } from '@mobileSenior/utils/useEnhancedEffect';
 import { useScript } from '@mobileSenior/utils/useScript';
+import { Sheet, Typography } from '@mui/joy';
 
 export function Home() {
   const status = useScript(`https://unpkg.com/feather-icons`);
@@ -13,5 +14,19 @@ export function Home() {
     }
   }, [status]);
 
-  return <div>HOME</div>;
+  return (
+    <Sheet
+      sx={{
+        bgcolor: 'background.body',
+        flex: 1,
+        maxWidth: 1200,
+        width: '100%',
+        mx: 'auto',
+      }}
+    >
+      <Typography level="h1" fontSize="xl2" sx={{ mb: 1 }}>
+        Strona główna
+      </Typography>
+    </Sheet>
+  );
 }
