@@ -1,5 +1,6 @@
 import { Destination } from '@mobileSenior/constants/destination';
 import { Preference } from '@mobileSenior/constants/preference';
+import { User } from '@mobileSenior/constants/user';
 import {
   ApplicationState,
   getDefaultApplicationState,
@@ -14,6 +15,9 @@ export interface ApplicationStore {
 
   ridesTotal: number;
   ridesUsed: number;
+  toggleLogged: () => void;
+  setUser: (user: User) => void;
+  setDriverOffers: (queryStatus: QueryStatus, results?: RideOffer[]) => void;
   setReservations: (queryStatus: QueryStatus, results?: Reservation[]) => void;
   clear: () => void;
   setRideOffers: (queryStatus: QueryStatus, results?: RideOffer[]) => void;
@@ -28,6 +32,38 @@ export const useCreateApplicationStore = (): ApplicationStore => {
 
   const ridesTotal = 3;
   const ridesUsed = state.reservations.results.length;
+
+  const toggleLogged = useCallback(
+    () =>
+      setState((prevState) => ({
+        ...prevState,
+        logged: !prevState.logged,
+      })),
+    [],
+  );
+
+  const setUser = useCallback(
+    (user?: User) =>
+      setState((prevState) => ({
+        ...prevState,
+        user: user ?? getDefaultApplicationState().user,
+        logged: !!user,
+      })),
+    [],
+  );
+
+  const setDriverOffers = useCallback(
+    (queryStatus: QueryStatus, results?: RideOffer[]) =>
+      setState((prevState) => ({
+        ...prevState,
+        driverOffers: {
+          ...prevState.driverOffers,
+          queryStatus,
+          ...(results && { results }),
+        },
+      })),
+    [],
+  );
 
   const setReservations = useCallback(
     (queryStatus: QueryStatus, results?: Reservation[]) =>
@@ -110,6 +146,9 @@ export const useCreateApplicationStore = (): ApplicationStore => {
 
       ridesTotal,
       ridesUsed,
+      toggleLogged,
+      setUser,
+      setDriverOffers,
       setReservations,
       clear,
       setRideOffers,
@@ -122,6 +161,9 @@ export const useCreateApplicationStore = (): ApplicationStore => {
       state,
       ridesTotal,
       ridesUsed,
+      toggleLogged,
+      setUser,
+      setDriverOffers,
       setReservations,
       clear,
       setRideOffers,

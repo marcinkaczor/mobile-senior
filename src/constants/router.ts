@@ -1,4 +1,5 @@
 export interface Router {
+  LOGIN: '/login';
   HOME: '/';
   RIDE: '/ride';
   PROFILE: '/profile';
@@ -6,6 +7,7 @@ export interface Router {
 }
 
 export const ROUTER: Router = {
+  LOGIN: '/login',
   HOME: '/',
   RIDE: '/ride',
   PROFILE: '/profile',

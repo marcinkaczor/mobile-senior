@@ -1,6 +1,9 @@
 import { DESTINATIONS } from '@mobileSenior/constants/destination';
 import { PREFERENCES } from '@mobileSenior/constants/preference';
+import { ROUTER } from '@mobileSenior/constants/router';
+import { UserRole } from '@mobileSenior/constants/user';
 import { Offers } from '@mobileSenior/features/ride/features/offers/Offers';
+import { usePublishCommand } from '@mobileSenior/features/ride/features/offers/commands/publish';
 import { useSearchCommand } from '@mobileSenior/features/ride/features/offers/commands/search';
 import { useApplicationContext } from '@mobileSenior/store/context';
 import { QueryStatus } from '@mobileSenior/utils/queryStatus';
@@ -16,7 +19,8 @@ import {
   Sheet,
   Typography,
 } from '@mui/joy';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export function Ride() {
   const status = useScript(`https://unpkg.com/feather-icons`);
@@ -32,7 +36,9 @@ export function Ride() {
 
   const {
     state: {
-      rideOffers: { queryStatus },
+      user: { role },
+      driverOffers: { queryStatus: driverOffersQS },
+      rideOffers: { queryStatus: rideOffersQS },
       rideQuery: {
         destinations,
         arrivalDateTime,
@@ -47,7 +53,28 @@ export function Ride() {
     setRideQueryPreferences,
   } = useApplicationContext();
 
+  const navigate = useNavigate();
+
+  let queryStatus = QueryStatus.Initial;
+  if (role === UserRole.Senior) {
+    queryStatus = rideOffersQS;
+  }
+  if (role === UserRole.Driver) {
+    queryStatus = driverOffersQS;
+  }
+
   const search = useSearchCommand();
+  const publish = usePublishCommand();
+
+  const click = useCallback(async () => {
+    if (role === UserRole.Senior) {
+      search();
+    }
+    if (role === UserRole.Driver) {
+      await publish();
+      navigate(ROUTER.HOME);
+    }
+  }, [role, search, publish, navigate]);
 
   useEffect(() => {
     return clear();
@@ -136,7 +163,9 @@ export function Ride() {
                 disabled={queryStatus === QueryStatus.InProgress}
                 placeholder="Osobiste preferencje"
                 startDecorator={<i data-feather="hash" />}
-                getOptionLabel={(option) => option.description}
+                getOptionLabel={(option) =>
+                  role === UserRole.Senior ? option.description : option.name
+                }
                 value={preferences}
                 options={PREFERENCES}
                 onChange={(_, value) => setRideQueryPreferences(value)}
@@ -158,14 +187,15 @@ export function Ride() {
               variant="outlined"
               onClick={clear}
             >
-              Wyczyść wyniki wyszukiwania
+              Wyczyść
             </Button>
             <Button
               disabled={queryStatus === QueryStatus.InProgress}
               size="sm"
-              onClick={search}
+              onClick={click}
             >
-              Szukaj
+              {role === UserRole.Senior && 'Szukaj'}
+              {role === UserRole.Driver && 'Publikuj'}
             </Button>
           </Box>
         </Box>

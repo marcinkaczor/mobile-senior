@@ -5,15 +5,18 @@ import { useCallback } from 'react';
 
 export const useSearchCommand = () => {
   const {
-    state: { rideQuery },
+    state: {
+      rideQuery,
+      driverOffers: { results: driverOffers },
+    },
     setRideOffers,
   } = useApplicationContext();
 
   return useCallback(async () => {
     setRideOffers(QueryStatus.InProgress);
 
-    const results = await getRideOffers(rideQuery);
+    const results = await getRideOffers(driverOffers, rideQuery);
 
     setRideOffers(QueryStatus.Success, results);
-  }, [rideQuery, setRideOffers]);
+  }, [rideQuery, driverOffers, setRideOffers]);
 };

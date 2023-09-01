@@ -20,6 +20,7 @@ export interface Driver {
     color: string;
     boardNumber: string;
   };
+  phone: string;
   description: string;
   ranking: 0 | 1 | 2 | 3 | 4 | 5;
   destinationCodes: DestinationCode[];
@@ -41,6 +42,7 @@ export const DRIVERS: Driver[] = [
       color: 'srebrny',
       boardNumber: 'SZA 07070',
     },
+    phone: '787-456-123',
     description: '',
     ranking: 5,
     destinationCodes: [
@@ -59,12 +61,7 @@ export const DRIVERS: Driver[] = [
       PreferenceCode.Deafness,
       PreferenceCode.Talkative,
     ],
-    availabilityRanges: [
-      {
-        from: '2023-08-01T00:00',
-        to: '2023-11-01T00:00',
-      },
-    ],
+    availabilityRanges: [],
   },
   {
     id: uuidv4(),
@@ -79,6 +76,7 @@ export const DRIVERS: Driver[] = [
       color: 'złoty',
       boardNumber: 'SZA 44344',
     },
+    phone: '513-478-110',
     description: '',
     ranking: 3,
     destinationCodes: [DestinationCode.ZOZ],
@@ -107,6 +105,7 @@ export const DRIVERS: Driver[] = [
       color: 'biały',
       boardNumber: 'SMY 12321',
     },
+    phone: '790-126-110',
     description: '',
     ranking: 5,
     destinationCodes: [
@@ -146,6 +145,7 @@ export const DRIVERS: Driver[] = [
       color: 'żółty',
       boardNumber: 'SZA 55685',
     },
+    phone: '500-180-338',
     description: '',
     ranking: 4,
     destinationCodes: [DestinationCode.APT, DestinationCode.ZDR],
@@ -179,6 +179,7 @@ export const DRIVERS: Driver[] = [
       color: 'szary',
       boardNumber: 'SZA 92899',
     },
+    phone: '608-099-666',
     description: '',
     ranking: 4,
     destinationCodes: [
@@ -217,6 +218,7 @@ export const DRIVERS: Driver[] = [
       color: 'szary',
       boardNumber: 'SZA 88765',
     },
+    phone: '798-234-444',
     description: '',
     ranking: 5,
     destinationCodes: [
@@ -259,6 +261,7 @@ export const DRIVERS: Driver[] = [
       color: 'niebieski',
       boardNumber: 'SZA 66345',
     },
+    phone: '601-132-500',
     description: '',
     ranking: 4,
     destinationCodes: [
@@ -292,6 +295,7 @@ export const DRIVERS: Driver[] = [
       color: 'czerwony',
       boardNumber: 'KOL 86568',
     },
+    phone: '606-888-009',
     description: '',
     ranking: 4,
     destinationCodes: [DestinationCode.ZOZ, DestinationCode.LEK],
@@ -324,6 +328,7 @@ export const DRIVERS: Driver[] = [
       color: 'biały',
       boardNumber: 'SZA 33789',
     },
+    phone: '532-567-000',
     description: '',
     ranking: 5,
     destinationCodes: [
@@ -365,6 +370,7 @@ export const DRIVERS: Driver[] = [
       color: 'żółty',
       boardNumber: 'SZA 76567',
     },
+    phone: '510-056-781',
     description: '',
     ranking: 5,
     destinationCodes: [

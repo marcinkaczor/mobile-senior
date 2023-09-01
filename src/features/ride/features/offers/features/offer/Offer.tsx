@@ -11,7 +11,7 @@ import { PREFERENCES } from '@mobileSenior/constants/preference';
 import { ROUTER } from '@mobileSenior/constants/router';
 import { useReserveCommand } from '@mobileSenior/features/ride/features/offers/features/offer/commands/reserve';
 import { useApplicationContext } from '@mobileSenior/store/context';
-import { RideOffer } from '@mobileSenior/types/rideOffer';
+import { RideOffer, RideOfferVariant } from '@mobileSenior/types/rideOffer';
 import { QueryStatus } from '@mobileSenior/utils/queryStatus';
 import { useEnhancedEffect } from '@mobileSenior/utils/useEnhancedEffect';
 import { useScript } from '@mobileSenior/utils/useScript';
@@ -160,20 +160,36 @@ export function Offer({ rideOffer, reserved }: Props) {
           </Stack>
 
           <Stack spacing={1} direction="row" useFlexGap flexWrap="wrap">
-            {rideOfferDriver.preferenceCodes.map((preferenceCode) => (
-              <Chip
-                key={preferenceCode}
-                color="neutral"
-                size="sm"
-                variant="soft"
-              >
-                {
-                  PREFERENCES.find(
-                    (preference) => preference.code === preferenceCode,
-                  )?.name
-                }
-              </Chip>
-            ))}
+            {rideOffer.variant === RideOfferVariant.Predefined &&
+              rideOfferDriver.preferenceCodes.map((preferenceCode) => (
+                <Chip
+                  key={preferenceCode}
+                  color="neutral"
+                  size="sm"
+                  variant="soft"
+                >
+                  {
+                    PREFERENCES.find(
+                      (preference) => preference.code === preferenceCode,
+                    )?.name
+                  }
+                </Chip>
+              ))}
+            {rideOffer.variant === RideOfferVariant.Typed &&
+              rideOffer.preferenceIds.map((preferenceId) => (
+                <Chip
+                  key={preferenceId}
+                  color="neutral"
+                  size="sm"
+                  variant="soft"
+                >
+                  {
+                    PREFERENCES.find(
+                      (preference) => preference.id === preferenceId,
+                    )?.name
+                  }
+                </Chip>
+              ))}
           </Stack>
 
           <Stack spacing={3} direction="row">
@@ -185,6 +201,9 @@ export function Offer({ rideOffer, reserved }: Props) {
             </Typography>
             <Typography startDecorator={<i data-feather="sidebar" />}>
               {rideOfferDriver.car.boardNumber}
+            </Typography>
+            <Typography startDecorator={<i data-feather="phone" />}>
+              {rideOfferDriver.phone}
             </Typography>
             <Stack
               spacing={1}

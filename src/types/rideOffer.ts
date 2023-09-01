@@ -1,3 +1,9 @@
+export enum RideOfferVariant {
+  Predefined,
+  Typed,
+  None,
+}
+
 export interface RideOffer {
   driverId: string;
   destinationIds: string[];
@@ -5,4 +11,5 @@ export interface RideOffer {
   departureDateTime: string;
   preferenceIds: string[];
   price: number;
+  variant: RideOfferVariant;
 }

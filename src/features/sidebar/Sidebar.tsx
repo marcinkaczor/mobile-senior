@@ -1,7 +1,10 @@
 import { ROUTER } from '@mobileSenior/constants/router';
+import { UserRole } from '@mobileSenior/constants/user';
 import { useApplicationContext } from '@mobileSenior/store/context';
 import { ColorSchemeToggle } from '@mobileSenior/utils/ColorSchemeToggle';
 import { closeSidebar } from '@mobileSenior/utils/sidebar';
+import { useEnhancedEffect } from '@mobileSenior/utils/useEnhancedEffect';
+import { useScript } from '@mobileSenior/utils/useScript';
 import { Link } from '@mui/joy';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
@@ -22,9 +25,27 @@ import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 export function Sidebar() {
+  const status = useScript(`https://unpkg.com/feather-icons`);
+
+  useEnhancedEffect(() => {
+    // Feather icon setup: https://github.com/feathericons/feather#4-replace
+    // @ts-ignore
+    if (typeof feather !== 'undefined') {
+      // @ts-ignore
+      feather.replace();
+    }
+  }, [status]);
+
   const [isCardVisible, setCardVisible] = useState(true);
 
-  const { ridesTotal, ridesUsed } = useApplicationContext();
+  const {
+    state: {
+      user: { name, surname, email, role },
+    },
+    ridesTotal,
+    ridesUsed,
+    toggleLogged,
+  } = useApplicationContext();
 
   const ridesLeft = ridesTotal - ridesUsed;
 
@@ -162,8 +183,8 @@ export function Sidebar() {
               <ListItemContent>Profil</ListItemContent>
             </ListItemButton>
           </ListItem>
-          <ListItem component={RouterLink} to={ROUTER.SETTINGS}>
-            <ListItemButton>
+          <ListItem>
+            <ListItemButton disabled>
               <ListItemDecorator>
                 <i data-feather="settings" />
               </ListItemDecorator>
@@ -172,7 +193,7 @@ export function Sidebar() {
           </ListItem>
         </List>
       </Box>
-      {isCardVisible && (
+      {isCardVisible && role === UserRole.Senior && (
         <Card
           variant="soft"
           color="primary"
@@ -209,11 +230,11 @@ export function Sidebar() {
         <Avatar variant="outlined" src="/static/images/avatar/3.jpg" />
         <Box sx={{ minWidth: 0, flex: 1 }}>
           <Typography fontSize="sm" fontWeight="lg">
-            Gałązka B.
+            {surname} {name[0]}.
           </Typography>
-          <Typography level="body3">galazka.bogdan@gmail.com</Typography>
+          <Typography level="body3">{email}</Typography>
         </Box>
-        <IconButton variant="plain" color="neutral">
+        <IconButton variant="plain" color="neutral" onClick={toggleLogged}>
           <i data-feather="log-out" />
         </IconButton>
       </Box>

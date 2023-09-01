@@ -8,12 +8,13 @@ import { useEnhancedEffect } from '@mobileSenior/utils/useEnhancedEffect';
 
 import { ROUTER } from '@mobileSenior/constants/router';
 import { Home } from '@mobileSenior/features/home/Home';
+import { Login } from '@mobileSenior/features/login/Login';
 import Profile from '@mobileSenior/features/profile/Profile';
 import { Ride } from '@mobileSenior/features/ride/Ride';
 import { Settings } from '@mobileSenior/features/settings/Settings';
 import { Sidebar } from '@mobileSenior/features/sidebar/Sidebar';
-import { ApplicationContextProvider } from '@mobileSenior/store/Provider';
-import { Route, Routes } from 'react-router-dom';
+import { useApplicationContext } from '@mobileSenior/store/context';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 export function App() {
   const status = useScript(`https://unpkg.com/feather-icons`);
@@ -27,21 +28,25 @@ export function App() {
     }
   }, [status]);
 
+  const {
+    state: { logged },
+  } = useApplicationContext();
+
   return (
-    <ApplicationContextProvider>
-      <CssVarsProvider disableTransitionOnChange theme={customTheme}>
-        <GlobalStyles
-          styles={{
-            '[data-feather], .feather': {
-              color: 'var(--Icon-color)',
-              margin: 'var(--Icon-margin)',
-              fontSize: 'var(--Icon-fontSize, 20px)',
-              width: '1em',
-              height: '1em',
-            },
-          }}
-        />
-        <CssBaseline />
+    <CssVarsProvider disableTransitionOnChange theme={customTheme}>
+      <GlobalStyles
+        styles={{
+          '[data-feather], .feather': {
+            color: 'var(--Icon-color)',
+            margin: 'var(--Icon-margin)',
+            fontSize: 'var(--Icon-fontSize, 20px)',
+            width: '1em',
+            height: '1em',
+          },
+        }}
+      />
+      <CssBaseline />
+      {logged ? (
         <Box sx={{ display: 'flex', minHeight: '100dvh' }}>
           <Navbar />
           <Sidebar />
@@ -80,7 +85,14 @@ export function App() {
             </Routes>
           </Box>
         </Box>
-      </CssVarsProvider>
-    </ApplicationContextProvider>
+      ) : (
+        <>
+          <Navigate to={ROUTER.LOGIN} />
+          <Routes>
+            <Route path={ROUTER.LOGIN} element={<Login />} />
+          </Routes>
+        </>
+      )}
+    </CssVarsProvider>
   );
 }

@@ -1,7 +1,9 @@
 import { DESTINATIONS } from '@mobileSenior/constants/destination';
 import { PREFERENCES } from '@mobileSenior/constants/preference';
+import { UserRole } from '@mobileSenior/constants/user';
 import { Offer } from '@mobileSenior/features/ride/features/offers/features/offer/Offer';
 import { useApplicationContext } from '@mobileSenior/store/context';
+import { RideOffer } from '@mobileSenior/types/rideOffer';
 import { formatDateToDisplay } from '@mobileSenior/utils/formatDateToDisplay';
 import { useEnhancedEffect } from '@mobileSenior/utils/useEnhancedEffect';
 import { useScript } from '@mobileSenior/utils/useScript';
@@ -21,9 +23,23 @@ export function Home() {
 
   const {
     state: {
+      user: { role },
+      driverOffers: { results: driverOffers },
       reservations: { results: reservations },
     },
   } = useApplicationContext();
+
+  let infix = '';
+  let items: RideOffer[] = [];
+  if (role === UserRole.Senior) {
+    infix = 'zarezerwowanych';
+    items = reservations;
+  }
+
+  if (role === UserRole.Driver) {
+    infix = 'opublikowanych';
+    items = driverOffers;
+  }
 
   return (
     <Sheet
@@ -49,14 +65,14 @@ export function Home() {
           },
         }}
       >
-        {!reservations.length && (
+        {!items.length && (
           <Typography level="body1">
-            Brak aktualnie zarezerwowanych przejazdów
+            Brak aktualnie {infix} przejazdów
           </Typography>
         )}
-        {reservations.map((reservation, index) => (
+        {items.map((item, index) => (
           <Card
-            key={reservation.id}
+            key={index}
             variant="outlined"
             orientation="horizontal"
             sx={{
@@ -110,7 +126,7 @@ export function Home() {
                 </div>
               </Stack>
               <Stack spacing={1} direction="row" useFlexGap flexWrap="wrap">
-                {reservation.destinationIds.map((destinationId) => (
+                {item.destinationIds.map((destinationId) => (
                   <Chip
                     key={destinationId}
                     color="neutral"
@@ -135,7 +151,7 @@ export function Home() {
               </Stack>
               <Stack spacing={1} direction="row">
                 <Typography>
-                  {formatDateToDisplay(new Date(reservation.arrivalDateTime))}
+                  {formatDateToDisplay(new Date(item.arrivalDateTime))}
                 </Typography>
               </Stack>
 
@@ -148,7 +164,7 @@ export function Home() {
               </Stack>
               <Stack spacing={1} direction="row">
                 <Typography>
-                  {formatDateToDisplay(new Date(reservation.departureDateTime))}
+                  {formatDateToDisplay(new Date(item.departureDateTime))}
                 </Typography>
               </Stack>
 
@@ -165,7 +181,7 @@ export function Home() {
                 </div>
               </Stack>
               <Stack spacing={1} direction="row" useFlexGap flexWrap="wrap">
-                {reservation.preferenceIds.map((preferenceId) => (
+                {item.preferenceIds.map((preferenceId) => (
                   <Chip
                     key={preferenceId}
                     color="neutral"
@@ -180,9 +196,11 @@ export function Home() {
                   </Chip>
                 ))}
               </Stack>
-              <Stack marginTop={1}>
-                <Offer rideOffer={reservation} reserved />
-              </Stack>
+              {role === UserRole.Senior && (
+                <Stack marginTop={1}>
+                  <Offer rideOffer={item} reserved />
+                </Stack>
+              )}
             </Stack>
           </Card>
         ))}

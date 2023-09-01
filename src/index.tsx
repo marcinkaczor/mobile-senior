@@ -6,6 +6,7 @@ import { StyledEngineProvider } from '@mui/joy';
 import reportWebVitals from './reportWebVitals';
 
 import { App } from '@mobileSenior/App';
+import { ApplicationContextProvider } from '@mobileSenior/store/Provider';
 import { HashRouter } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(
@@ -15,7 +16,9 @@ root.render(
   <React.StrictMode>
     <StyledEngineProvider injectFirst>
       <HashRouter>
-        <App />
+        <ApplicationContextProvider>
+          <App />
+        </ApplicationContextProvider>
       </HashRouter>
     </StyledEngineProvider>
   </React.StrictMode>,
